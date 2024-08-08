@@ -7,9 +7,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-mongoose
-  .connect("mongodb://localhost:27017/user_tracking")
-  .then(() => console.log("Connected to mongoDB!"));
+const mongoUri =
+  process.env.MONGO_URI || "mongodb://localhost:27017/user_tracking";
+
+mongoose.connect(mongoUri).then(() => console.log("Connected to mongoDB!"));
 
 app.post("/api/users", async (req, res) => {
   try {
