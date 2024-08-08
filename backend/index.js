@@ -12,12 +12,26 @@ mongoose
   .then(() => console.log("Connected to mongoDB!"));
 
 app.post("/api/users", async (req, res) => {
-  const user = new User(req.body);
-  await user.save();
-  res.send(user);
+  try {
+    const { userId } = req.body;
+    let user = await User.findOne({ userId });
+
+    if (user) {
+      // Update existing user
+      user = await User.findOneAndUpdate({ userId }, req.body, { new: true });
+    } else {
+      // Create new user
+      user = new User(req.body);
+      await user.save();
+    }
+
+    res.send(user);
+  } catch (error) {
+    res.status(500).send({ error: "Failed to create user" });
+  }
 });
 
-app.patch("/api/users/:id", async (req, res) => {
+app.patch("/api/users/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
     const user = await User.findOneAndUpdate({ userId: userId }, req.body, {
