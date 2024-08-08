@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { localAddress } from "../appconfig.tsx";
 
-import User from "../interfaces/user.interface";
+import User from "../interfaces/user.interface.tsx";
 
 const articleText = `
     Shares on Wall Street and in London have fallen heavily amid a global stock market rout triggered by fears of a recession in the US.

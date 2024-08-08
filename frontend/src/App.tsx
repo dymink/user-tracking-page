@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import HomePage from "./components/HomePage";
-import ReportPage from "./components/ReportPage";
+import HomePage from "./pages/HomePage.tsx";
+import ReportPage from "./pages/ReportPage.tsx";
 import Menu from "./components/Menu.tsx";
 
 function App() {
