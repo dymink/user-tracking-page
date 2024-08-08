@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { localAddress } from "../appconfig.tsx";
 
 import User from "../interfaces/user.interface";
 
@@ -28,7 +29,7 @@ const HomePage: React.FC = () => {
         avatar: data.avatar,
       };
       setUser(newUser);
-      await axios.post("http://localhost:5100/api/users", newUser);
+      await axios.post(`${localAddress}/api/users`, newUser);
     };
 
     fetchUser();
@@ -42,7 +43,7 @@ const HomePage: React.FC = () => {
 
     const rect = imgElement.getBoundingClientRect();
     if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
-      await axios.patch(`http://localhost:5000/api/users/${user.userId}`, {
+      await axios.patch(`${localAddress}/api/users/${user.userId}`, {
         scrolledToImage: true,
       });
     }

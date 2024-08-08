@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ReportData from "../interfaces/report.interface";
+import { localAddress } from "../appconfig";
 
 function ReportPage() {
   const [report, setReport] = useState<ReportData | null>(null);
 
   useEffect(() => {
     const fetchReport = async () => {
-      const { data } = await axios.get("http://localhost:5000/api/report");
+      const { data } = await axios.get(`${localAddress}/api/report`);
       setReport(data);
     };
 
