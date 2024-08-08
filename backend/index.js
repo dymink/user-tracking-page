@@ -1,24 +1,15 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const User = require("./models/User");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect("mongodb://localhost:27017/user_tracking");
-
-const userSchema = new mongoose.Schema({
-  userId: String,
-  firstName: String,
-  lastName: String,
-  email: String,
-  avatar: String,
-  accessedAt: { type: Date, default: Date.now },
-  scrolledToImage: { type: Boolean, default: false },
-});
-
-const User = mongoose.model("User", userSchema);
+mongoose
+  .connect("mongodb://localhost:27017/user_tracking")
+  .then(() => console.log("Connected to mongoDB!"));
 
 app.post("/api/users", async (req, res) => {
   const user = new User(req.body);
@@ -27,9 +18,15 @@ app.post("/api/users", async (req, res) => {
 });
 
 app.patch("/api/users/:id", async (req, res) => {
-  const { id } = req.params;
-  const user = await User.findByIdAndUpdate(id, req.body, { new: true });
-  res.send(user);
+  try {
+    const { userId } = req.params;
+    const user = await User.findOneAndUpdate({ userId: userId }, req.body, {
+      new: true,
+    });
+    res.send(user);
+  } catch (error) {
+    res.status(500).send(error);
+  }
 });
 
 app.get("/api/report", async (req, res) => {
@@ -43,6 +40,7 @@ app.get("/api/report", async (req, res) => {
   });
 });
 
-app.listen(5100, () => {
-  console.log("Server is running on port 5100");
+const PORT = process.env.PORT || 5100;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
