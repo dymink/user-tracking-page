@@ -35,21 +35,25 @@ const HomePage: React.FC = () => {
     fetchUser();
   }, []);
 
-  const handleScroll = async () => {
-    const imgElement = document.getElementById(
-      "user-avatar"
-    ) as HTMLImageElement | null;
-    if (!imgElement || !user) return;
-
-    const rect = imgElement.getBoundingClientRect();
-    if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
-      await axios.patch(`${localAddress}/api/users/${user.userId}`, {
-        scrolledToImage: true,
-      });
-    }
-  };
-
   useEffect(() => {
+    console.log(user);
+    const handleScroll = async () => {
+      const imgElement = document.getElementById(
+        "user-avatar"
+      ) as HTMLImageElement | null;
+      if (!imgElement || !user) return;
+
+      const rect = imgElement.getBoundingClientRect();
+      if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
+        window.removeEventListener("scroll", handleScroll);
+        console.log(user.userId);
+        console.log(`${localAddress}/api/users/${user.userId}`);
+        await axios.patch(`${localAddress}/api/users/${user.userId}`, {
+          scrolledToImage: true,
+        });
+      }
+    };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [user]);
@@ -59,17 +63,17 @@ const HomePage: React.FC = () => {
       {user && (
         <>
           {Array.from({ length: 10 }, (_, i) => (
-            <p key={i}>
-              <div>Article {i + 1} </div>
-              <div>{articleText}</div>
-            </p>
+            <article key={i}>
+              <h2>Article {i + 1} </h2>
+              <p>{articleText}</p>
+            </article>
           ))}
           <img id="user-avatar" src={user.avatar} alt="User Avatar" />
           {Array.from({ length: 10 }, (_, i) => (
-            <p key={i + 10}>
-              <div>Article {i + 10} </div>
-              <div>{articleText}</div>
-            </p>
+            <article key={i + 10}>
+              <h2>Article {i + 10} </h2>
+              <p>{articleText}</p>
+            </article>
           ))}
         </>
       )}
