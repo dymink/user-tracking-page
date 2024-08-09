@@ -3,7 +3,7 @@
 ## How to use
 
 clone this repo
-`git clone https://github.com/yourusername/user-tracking-page.git`
+`git clone https://github.com/dymink/user-tracking-page.git`
 
 go to repo folder
 `cd user-tracking-page`
