@@ -10,6 +10,13 @@ go to repo folder
 
 make sure you got docker and docker compose installed
 
+- Mac os / windows
+  `docker --version`
+
+-linux (on linux docker compose is separate plugin)
+`docker --version`
+`docker compose version`
+
 start containers
 `docker compose up --build`
 
